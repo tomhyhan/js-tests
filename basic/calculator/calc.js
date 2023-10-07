@@ -8,6 +8,10 @@ const MATH_OPERATIONS = {
 }
 
 function tokenize(expression) {
+    if (!(/^[0-9+\-*/\s()]+$/).test(expression)) {
+        throw new Error("not a valid expression")
+    }
+
     const split_expression = expression.split(" ")
     const stack = []
     const tokens = []
@@ -36,6 +40,8 @@ function tokenize(expression) {
                         current = stack.pop()
                     }
                     break
+                default:
+                    throw new Error("not a valid token!")
             }
         }
     }
@@ -64,7 +70,5 @@ function calculator(expression) {
     const tokens = tokenize(expression)
     return evaluate(tokens)
 }
-// console.log(calculator("1 / 0")
-// )
 
-module.exports = calculator
+module.exports = {calculator, evaluate, tokenize}
