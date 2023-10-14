@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ImageDetail > renders ImageDetail correctly with video state 1`] = `
+<DocumentFragment>
+  <ul>
+    <li>
+      0
+    </li>
+    <li>
+      https://foo.bar.download_url
+    </li>
+    <li>
+      Foo
+    </li>
+  </ul>
+</DocumentFragment>
+`;

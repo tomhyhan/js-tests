@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Image > renders Image 1`] = `
+<DocumentFragment>
+  <li
+    class="px-4 cursor-pointer"
+  >
+    <img
+      alt="Foo"
+      src="https://foo.bar.download_url"
+    />
+  </li>
+</DocumentFragment>
+`;

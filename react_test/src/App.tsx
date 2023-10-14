@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css'
+import { BrowserRouter, Outlet } from 'react-router-dom';
+import { ImageProvider } from './context/ImageProvider';
 
 function App() {
 
   return (
-  <h1 className="text-3xl font-bold underline">
-    Hello world! asdf
-  </h1>
+    <ImageProvider>
+        <Outlet />
+    </ImageProvider>
   )
 }
 

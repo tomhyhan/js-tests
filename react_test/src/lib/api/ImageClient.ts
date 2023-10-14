@@ -1,11 +1,22 @@
-import HttpClient from "../../http/httpclient";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 
-class ImageClient {
-    constructor(private httpClient: HttpClient) {
+export default class ImageClient {
+    baseUrl: string
+    http: AxiosInstance
+
+    constructor() {
+        this.baseUrl = "https://picsum.photos";
+        this.http = axios.create({
+            baseURL: this.baseUrl,
+        })
     }
 
-    async get(path: string, options: RequestInit) {
-        const data = await this.httpClient.fetch("https://picsum.photos/200/300",{})
-        console.log(await data.json())
+    async getImages(params : AxiosRequestConfig) {
+        return await this.http.get("/v2/list", params);
     }
+    async getImage() {
+        const randomNumber = Math.floor(Math.random() * 1085);
+        return await this.http.get(`/id/${randomNumber}/info`);
+    }
+
 }
