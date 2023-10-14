@@ -1,9 +1,9 @@
 import { render } from "@testing-library/react";
-import ImageDetail from './ImageDetail';
+import ImageDetail from '../ImageDetail';
 import { describe, it } from "vitest";
-import { withRouter }from  "../test/utils";
+import { withRouter }from  "../../test/utils";
 import { Route } from "react-router-dom";
-import { fakeImage } from './../test/fakeData';
+import { fakeImage } from '../../test/fakeData';
 
 describe("ImageDetail", () => {
     it("renders ImageDetail correctly with video state", async () => {
