@@ -3,19 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { withRouter, withContext } from '../../test/utils';
 import { Route } from 'react-router-dom';
 import Images from '../Images';
-import { fakeImages } from '../../test/fakeData';
+import { fakeBlurImage, fakeGrayscaleImage, fakeImage, fakeImages } from '../../test/fakeData';
 import '@testing-library/jest-dom';
-
-// renders images
-// showing loading
-// showing error
-// adding normal image
-// adding blur image
-// adding grayscale image
+import userEvent from '@testing-library/user-event';
 
 describe('Images', () => {
   const fakeImageService = {
     getImages: vi.fn(),
+    getImage: vi.fn()
   };
 
   beforeEach(() => {
@@ -24,33 +19,96 @@ describe('Images', () => {
 
   afterEach(() => {
     fakeImageService.getImages.mockReset();
+    fakeImageService.getImage.mockReset();
   });
 
   it('renders all Images list', async () => {
-    const { asFragment } = render(
-      withContext(
-        withRouter(<Route path='/' element={<Images />} />),
-        fakeImageService
-      )
-    );
+    const {asFragment} = renderImage()
 
     expect(fakeImageService.getImages).toHaveBeenCalledOnce();
+    expect(await screen.findAllByRole('listitem')).toHaveLength(fakeImages.length)
 
-    await waitFor(() =>
-      expect(screen.getAllByRole('listitem')).toHaveLength(fakeImages.length)
-    );
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('renders loading state', async () => {
-    const { debug } = render(
-      withContext(
-        withRouter(<Route path='/' element={<Images />} />),
-        fakeImageService
-      )
+  it('renders loading state',  async () => {
+    renderImage()
+
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+    
+    await waitFor(() =>
+      expect(screen.getAllByRole('listitem')).toHaveLength(fakeImages.length)
     );
-    console.log('debug');
-    console.log(debug());
-    expect(screen.getByText(/Loading.../)).toBeInTheDocument();
   });
+
+  it("renders error state when fakeimage thorws an error", async () => {
+    fakeImageService.getImages.mockImplementation(() => {
+        throw new Error()
+    });
+
+    renderImage()
+    
+    expect(await screen.findByText(/Something Went Wrong!/)).toBeInTheDocument()
+  })
+
+  it("return normal image when add button in clicked", async () => {
+    fakeImageService.getImage.mockImplementation(() => fakeImage);
+
+    renderImage()
+
+    const btn = await screen.findByText("Add Image")
+    await userEvent.click(btn)
+
+    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    const img = await screen.findByAltText(fakeImage.author)
+    expect(img.src).toBe("https://foo.bar.download_url/")
+    
+  })
+
+  it("return blur image when add button in clicked", async () => {
+    fakeImageService.getImage.mockImplementation(() => fakeBlurImage);
+
+    renderImage()
+
+    const select = await screen.findByRole("combobox")
+    await userEvent.selectOptions(select, ["blur"])
+    expect(screen.getByRole('option', {name: 'blur'}).selected).toBe(true)
+
+    const btn = await screen.findByText("Add Image")
+    await userEvent.click(btn)
+
+    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    const img = await screen.findByAltText(fakeImage.author)
+    expect(img.src).toBe("https://foo.bar.download_url/?blur=5")
+    
+  })
+
+  it("return grayscale image when add button in clicked", async () => {
+    fakeImageService.getImage.mockImplementation(() => fakeGrayscaleImage);
+
+    renderImage()
+
+    const select = await screen.findByRole("combobox")
+    await userEvent.selectOptions(select, ["grayscale"])
+    expect(screen.getByRole('option', {name: 'grayscale'}).selected).toBe(true)
+
+    const btn = await screen.findByText("Add Image")
+    await userEvent.click(btn)
+
+    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    const img = await screen.findByAltText(fakeImage.author)
+    expect(img.src).toBe("https://foo.bar.download_url/?grayscale")
+    
+  })
+
+
+  function renderImage() {
+    return render(
+        withContext(
+          withRouter(<Route path='/' element={<Images />} />),
+          fakeImageService
+        )
+    );
+  }
+  
 });

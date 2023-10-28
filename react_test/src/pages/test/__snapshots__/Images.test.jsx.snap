@@ -42,7 +42,7 @@ exports[`Images > renders all Images list 1`] = `
       >
         <img
           alt="Foo"
-          src="https://foo.bar.download_url"
+          src="https://foo.bar.download_url_1"
         />
       </li>
       <li
@@ -50,7 +50,7 @@ exports[`Images > renders all Images list 1`] = `
       >
         <img
           alt="john"
-          src="https://john.doe.download_url"
+          src="https://john.doe.download_url_2"
         />
       </li>
     </ul>

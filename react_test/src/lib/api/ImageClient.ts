@@ -14,6 +14,7 @@ export default class ImageClient {
     async getImages(params : AxiosRequestConfig) {
         return await this.http.get("/v2/list", params);
     }
+    
     async getImage() {
         const randomNumber = Math.floor(Math.random() * 1085);
         return await this.http.get(`/id/${randomNumber}/info`);

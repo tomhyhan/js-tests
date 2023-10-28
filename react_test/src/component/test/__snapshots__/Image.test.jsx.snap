@@ -6,7 +6,7 @@ exports[`Image > renders Image 1`] = `
     class="px-4 cursor-pointer"
   >
     <img
-      alt="Foo"
+      alt="Bar"
       src="https://foo.bar.download_url"
     />
   </li>
