@@ -5,7 +5,7 @@ export const fakeImage: ImageT= {
     url: "https://foo.bar.url",
     height: 100,
     width: 100,
-    download_url: "https://foo.bar.download_url",
+    download_url: "https://foo.bar.download_url/",
     author: "Bar"
 }
 

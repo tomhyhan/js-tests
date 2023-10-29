@@ -10,9 +10,10 @@ export default function Images() {
     const {data: images, error, isLoading , mutate} = useSWR("images", () => imageService.getImages(), {
         revalidateOnFocus: false,
     })
-
+    console.log(images)
     const handleImageAdd = async (imageLayout:string) => {
         const newImage = await imageService.getImage(imageLayout)
+        console.log(newImage)
         await mutate([...images, newImage], {
             revalidate:false
         })

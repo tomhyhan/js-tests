@@ -36,9 +36,7 @@ describe('Images', () => {
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
     
-    await waitFor(() =>
-      expect(screen.getAllByRole('listitem')).toHaveLength(fakeImages.length)
-    );
+    expect(await screen.findAllByRole('listitem')).toHaveLength(fakeImages.length)
   });
 
   it("renders error state when fakeimage thorws an error", async () => {
@@ -55,13 +53,12 @@ describe('Images', () => {
     fakeImageService.getImage.mockImplementation(() => fakeImage);
 
     renderImage()
-
     const btn = await screen.findByText("Add Image")
     await userEvent.click(btn)
 
-    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    expect(await screen.findAllByRole('listitem')).toHaveLength(fakeImages.length + 1)
     const img = await screen.findByAltText(fakeImage.author)
-    expect(img.src).toBe("https://foo.bar.download_url/")
+    expect(img.src).toBe(fakeImage.download_url)
     
   })
 
@@ -72,14 +69,14 @@ describe('Images', () => {
 
     const select = await screen.findByRole("combobox")
     await userEvent.selectOptions(select, ["blur"])
+    const btn = await screen.findByText("Add Image")
     expect(screen.getByRole('option', {name: 'blur'}).selected).toBe(true)
 
-    const btn = await screen.findByText("Add Image")
     await userEvent.click(btn)
 
-    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    expect(await screen.findAllByRole('listitem')).toHaveLength(fakeImages.length + 1)
     const img = await screen.findByAltText(fakeImage.author)
-    expect(img.src).toBe("https://foo.bar.download_url/?blur=5")
+    expect(img.src).toBe(fakeBlurImage.download_url)
     
   })
 
@@ -95,9 +92,9 @@ describe('Images', () => {
     const btn = await screen.findByText("Add Image")
     await userEvent.click(btn)
 
-    expect(await screen.findAllByRole('listitem')).toHaveLength(3)
+    expect(await screen.findAllByRole('listitem')).toHaveLength(fakeImages.length + 1)
     const img = await screen.findByAltText(fakeImage.author)
-    expect(img.src).toBe("https://foo.bar.download_url/?grayscale")
+    expect(img.src).toBe(fakeGrayscaleImage.download_url)
     
   })
 

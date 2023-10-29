@@ -7,7 +7,7 @@ exports[`ImageDetail > renders ImageDetail correctly with video state 1`] = `
       2
     </li>
     <li>
-      https://foo.bar.download_url
+      https://foo.bar.download_url/
     </li>
     <li>
       Bar
