@@ -9,7 +9,7 @@ describe("Auth Route", () => {
     beforeAll(async () => {
         server = await startServer()
         request = axios.create({
-            baseURL: "http://localhost:8080",
+            baseURL: `http://localhost:${server.address().port}`,
             validateStatus: null
         })
     })
@@ -25,7 +25,7 @@ describe("Auth Route", () => {
     })
     
     afterAll(async () => {
-        await sequelize.drop()
+        // await sequelize.drop()
         await stopServer(server)
     })
     
@@ -153,7 +153,6 @@ describe("Auth Route", () => {
                 expect(res.data.length).toBe(1)
             })
         })
-
     })
 
     async function createReqWithToken(url, user) {

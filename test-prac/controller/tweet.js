@@ -26,6 +26,8 @@ export default class TweetController {
       const { text } = req.body;
       const tweet = await this.tweetRepository.create(text, req.userId);
       res.status(201).json(tweet);
+    //   console.log("server socket")
+    //   console.log(this.getSocketIO().id)
       this.getSocketIO().emit('tweets', tweet);
     }
 

@@ -12,7 +12,7 @@ import * as TweetRepository from './data/tweet.js';
 import TweetController from './controller/tweet.js';
 
 
-export async function startServer() {
+export async function startServer(port) {
     const app = express();
     
     const corsOption = {
@@ -24,7 +24,7 @@ export async function startServer() {
     app.use(cors(corsOption));
     app.use(morgan('tiny'));
     
-    app.use('/tweets', tweetsRouter(new TweetController(TweetRepository), getSocketIO));
+    app.use('/tweets', tweetsRouter(new TweetController(TweetRepository, () => getSocketIO())));
     
     app.use('/auth', authRouter);
     
@@ -40,7 +40,7 @@ export async function startServer() {
     await sequelize.sync()
 
     // console.log('Server is started....');
-    const server = app.listen(config.port);
+    const server = app.listen(port);
     initSocket(server);
     return server
 }

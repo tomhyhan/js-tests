@@ -2,7 +2,7 @@
 import TweetController from './../tweet';
 import httpMocks from 'node-mocks-http';
 import { faker } from '@faker-js/faker';
-import { createTweet } from '../../test/fakeData';
+import { createTweet } from '../../tests/fakeData';
 
 
 describe("tweetController", () => {
